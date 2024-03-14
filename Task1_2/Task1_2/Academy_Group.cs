@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO.Enumeration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Task1_2
 
         private List<Student> students;
         private int count;
+        private string fileName = "students.xml";
 
         public Academy_Group()
         {
@@ -61,8 +63,7 @@ namespace Task1_2
                 student.Print();
             }
         }
-
-        public void Save(string fileName)
+        public void Save()
         {
             XElement rootElement = new XElement("Students");
 
@@ -79,15 +80,14 @@ namespace Task1_2
 
                 rootElement.Add(studentElement);
             }
-            rootElement.Save("students.xml");
+            rootElement.Save(fileName);
         }
 
-        public List<Student> Load(string fileName)
+        public List<Student> Load()
         {
-            string filePath = "students.xml";
             List<Student> students = new List<Student>();
 
-            XElement rootElement = XElement.Load(filePath);
+            XElement rootElement = XElement.Load(fileName);
 
 
             foreach (var studentElement in rootElement.Elements("Student"))

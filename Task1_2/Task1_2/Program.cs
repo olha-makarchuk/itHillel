@@ -22,8 +22,8 @@
             Console.WriteLine("\nGroup after editing 'Doe' to 'Black':");
             group.Print();
 
-            group.Save("students.xml");
-            group.Load("students.xml");
+            group.Save();
+            group.Load();
 
             Console.WriteLine("\nGroup after loading from file:");
             group.Print();
