@@ -4,36 +4,35 @@ using MediatR;
 
 namespace Application.MovieFeatures.Commands.MovieCommands
 {
-    public class CreateMovieCommand : IRequest<int>
+    public class CreateMovieCommand : IRequest<Movie>
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
+    }
+    public class CreateMovieCommandHandler : IRequestHandler<CreateMovieCommand, Movie>
+    {
+        private readonly IApplicationDbContext _context;
 
-        public class CreateMovieCommandHandler : IRequestHandler<CreateMovieCommand, int>
+        public CreateMovieCommandHandler(IApplicationDbContext context)
         {
-            private readonly IApplicationDbContext _context;
+            _context = context;
+        }
 
-            public CreateMovieCommandHandler(IApplicationDbContext context)
+        public async Task<Movie> Handle(CreateMovieCommand command, CancellationToken cancellationToken)
+        {
+            var movie = new Movie
             {
-                _context = context;
-            }
+                Description = command.Description,
+                ReleaseDate = command.ReleaseDate,
+                Title = command.Title
+            };
 
-            public async Task<int> Handle(CreateMovieCommand command, CancellationToken cancellationToken)
-            {
-                var movie = new Movie
-                {
-                    Description = command.Description,
-                    ReleaseDate = command.ReleaseDate,
-                    Title = command.Title
-                };
+            _context.Movies.Add(movie);
+            await _context.SaveChangesAsync();
 
-                _context.Movies.Add(movie);
-                await _context.SaveChangesAsync();
-
-                return movie.Id;
-            }
+            return movie;
         }
     }
 }

@@ -17,8 +17,7 @@ namespace Application.MovieFeatures.Queries.SessionQueries
                 _context = context;
             }
 
-            async Task<IEnumerable<Session>> IRequestHandler<GetAllSessionsQuery, IEnumerable<Session>>
-                .Handle(GetAllSessionsQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Session>> Handle(GetAllSessionsQuery request, CancellationToken cancellationToken)
             {
                 var sessionList = await _context.Sessions.ToListAsync(cancellationToken);
 

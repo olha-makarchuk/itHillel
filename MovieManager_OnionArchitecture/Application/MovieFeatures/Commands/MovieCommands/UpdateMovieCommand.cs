@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,36 +11,36 @@ using System.Threading.Tasks;
 
 namespace Application.MovieFeatures.Commands.MovieCommands
 {
-    public class UpdateMovieCommand : IRequest<int>
+    public class UpdateMovieCommand : IRequest<Movie>
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
+    }
 
-        public class UpdateProductCommandHandler : IRequestHandler<UpdateMovieCommand, int>
+    public class UpdateMovieCommandHandler : IRequestHandler<UpdateMovieCommand, Movie>
+    {
+        private readonly IApplicationDbContext _context;
+
+        public UpdateMovieCommandHandler(IApplicationDbContext context)
         {
-            private readonly IApplicationDbContext _context;
+            _context = context;
+        }
 
-            public UpdateProductCommandHandler(IApplicationDbContext context)
-            {
-                _context = context;
-            }
+        public async Task<Movie> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
+        {
+            var movie = await _context.Movies.Where(a => a.Id == command.Id)
+                .FirstOrDefaultAsync(cancellationToken)
+                ?? throw new Exception("Movie not found");
 
-            public async Task<int> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
-            {
-                var movie = await _context.Movies.Where(a => a.Id == command.Id)
-                    .FirstOrDefaultAsync(cancellationToken) 
-                    ?? throw new Exception("Movie not found");
+            movie.Title = command.Title;
+            movie.Description = command.Description;
+            movie.ReleaseDate = command.ReleaseDate;
 
-                movie.Title = command.Title;
-                movie.Description = command.Description;
-                movie.ReleaseDate = command.ReleaseDate;
+            await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync();
-
-                return movie.Id;
-            }
+            return movie;
         }
     }
 }

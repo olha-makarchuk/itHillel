@@ -1,5 +1,6 @@
 ﻿using Application.MovieFeatures.Commands.SessionCommands;
 using Application.MovieFeatures.Queries.SessionQueries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MovieManager.Controllers.v1
@@ -7,6 +8,10 @@ namespace MovieManager.Controllers.v1
     [ApiVersion("1.0")]
     public class SessionController : BaseApiController
     {
+        public SessionController(IMediator mediator) : base(mediator)
+        {
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -49,7 +54,7 @@ namespace MovieManager.Controllers.v1
             }
         }
 
-        [HttpPut("[action]")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,  UpdateSessionCommand command)
         {
             try

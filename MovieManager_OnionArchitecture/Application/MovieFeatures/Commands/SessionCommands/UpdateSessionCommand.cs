@@ -5,36 +5,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.MovieFeatures.Commands.SessionCommands
 {
-    public class UpdateSessionCommand : IRequest<int>
+    public class UpdateSessionCommand : IRequest<Session>
     {
         public int Id { get; set; }
         public int MovieId { get; set; }
-        public string RoomName { get; set; }
+        public string RoomName { get; set; } = null!;
         public DateTime StartDateTime { get; set; }
+    }
 
-        public class UpdateProductCommandHandler : IRequestHandler<UpdateSessionCommand, int>
+    public class UpdateSessionCommandHandler : IRequestHandler<UpdateSessionCommand, Session>
+    {
+        private readonly IApplicationDbContext _context;
+
+        public UpdateSessionCommandHandler(IApplicationDbContext context)
         {
-            private readonly IApplicationDbContext _context;
+            _context = context;
+        }
 
-            public UpdateProductCommandHandler(IApplicationDbContext context)
-            {
-                _context = context;
-            }
+        public async Task<Session> Handle(UpdateSessionCommand command, CancellationToken cancellationToken)
+        {
+            var session = await _context.Sessions.Where(a => a.Id == command.Id)
+                .FirstOrDefaultAsync(cancellationToken)
+                ?? throw new Exception("Session not found");
 
-            public async Task<int> Handle(UpdateSessionCommand command, CancellationToken cancellationToken)
-            {
-                var session = await _context.Sessions.Where(a => a.Id == command.Id)
-                    .FirstOrDefaultAsync(cancellationToken) 
-                    ?? throw new Exception("Session not found");
+            session.MovieId = command.MovieId;
+            session.RoomName = command.RoomName;
+            session.StartDateTime = command.StartDateTime;
 
-                session.MovieId = command.MovieId;
-                session.RoomName = command.RoomName;
-                session.StartDateTime = command.StartDateTime;
+            await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync();
-
-                return session.Id;
-            }
+            return session;
         }
     }
 }
