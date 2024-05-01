@@ -5,6 +5,8 @@ using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using Application.Services;
+using Autofac;
 
 namespace MovieManager
 {
@@ -24,6 +26,7 @@ namespace MovieManager
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            services.AddHttpClient();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -40,6 +43,8 @@ namespace MovieManager
                 config.ReportApiVersions = true;
             });
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<IRefDataDirectorService, RefDataDirectorService>();
+            services.AddScoped<IRefDataGenreService, RefDataGenreService>();
             services.AddApplication();
             services.AddControllers();
 
@@ -69,6 +74,11 @@ namespace MovieManager
                 c.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
             ));
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<RefDataDirectorService>().As<IRefDataDirectorService>();
         }
     }
 }
