@@ -1,8 +1,7 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
 
-namespace Consemer
+namespace Consumer
 {
     internal class Program
     {
