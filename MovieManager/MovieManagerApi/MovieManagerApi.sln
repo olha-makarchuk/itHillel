@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieManager.Api.Tests", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieManager.Api.IntegrationTests", "MovieManager.Api.IntegrationTests\MovieManager.Api.IntegrationTests.csproj", "{EEC8A52E-A809-484F-846C-2CD066395719}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consemer", "Consemer\Consemer.csproj", "{1F0111DA-88BE-4D1B-BFF6-9AA7367F164F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer", "Consemer\Consumer.csproj", "{1F0111DA-88BE-4D1B-BFF6-9AA7367F164F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
