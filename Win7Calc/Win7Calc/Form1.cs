@@ -3,127 +3,121 @@ using System.Text;
 using System.Windows.Forms;
 using Win7Calc;
 
-internal enum Doing
-{
-    Plus,
-    Minus,
-    Degree,
-    Multyple,
-    Equels,
-    Sqrt
-}
-
 namespace Calculator
 {
-    public partial class Calc : Form
+    public partial class CalculatorProject : Form
     {
         private ICalculate _calculate;
-        private bool _isShowResult = true;
+        private bool _isResultDisplayed = true;
         private double? _memory;
-        private double? _number1;
-        private double? _number2;
+        private double? _inputNumberFirst;
+        private double? _inputNumberSecond;
 
-        public Calc()
+        public CalculatorProject()
         {
             InitializeComponent();
-            Table.Text = 0.ToString();
+            Table.Text = "0";
             KeyPreview = true;
         }
 
-        private void Culculate()
+        private void PerformOperation(ICalculate operation)
         {
-            if (_isShowResult)
+            Calculate();
+            _calculate = operation;
+        }
+
+        private void Calculate()
+        {
+            if (_isResultDisplayed) return;
+
+            if (TryGetCurrentValue(Table.Text, out double currentValue))
             {
-                return;
-            }
-            if (_number1 == null)
-            {
-                _number1 = double.Parse(Table.Text);
-                Table.Text = _number1.ToString();
-                _isShowResult = true;
-            }
-            else if (_number2 == null)
-            {
-                _number2 = double.Parse(Table.Text);
-                try
+                if (_inputNumberFirst == null)
                 {
-                    _number1 = _calculate.Calculate(_number1.Value, _number2.Value);
+                    _inputNumberFirst = currentValue;
+                    Table.Text = _inputNumberFirst.ToString();
                 }
-                catch (DivideByZeroException ex)
+                else if (_inputNumberSecond == null)
                 {
-                    MessageBox.Show("Делить на 0 нельзя!", "Ошибка!");
-                    ButtonClearC_Click(null, null);
-                    return;
+                    _inputNumberSecond = currentValue;
+                    try
+                    {
+                        _inputNumberFirst = _calculate.Calculate(_inputNumberFirst.Value, _inputNumberSecond.Value);
+                    }
+                    catch (DivideByZeroException)
+                    {
+                        MessageBox.Show("Cannot divide by zero!", "Error!");
+                        ClearInput();
+                        return;
+                    }
+                    Table.Text = _inputNumberFirst.ToString();
+                    _inputNumberSecond = null;
                 }
-                Table.Text = _number1.ToString();
-                _isShowResult = true;
-                _number2 = null;
+                _isResultDisplayed = true;
             }
         }
 
+        private void ClearInput()
+        {
+            _isResultDisplayed = true;
+            _inputNumberFirst = null;
+            _inputNumberSecond = null;
+            Table.Text = "0";
+        }
         private void ButtonPlus_Click(object sender, EventArgs e)
         {
-            Culculate();
-            _calculate = new Plus();
+            PerformOperation(new Plus());
         }
 
         private void ButtonMinus_Click(object sender, EventArgs e)
         {
-            Culculate();
-            _calculate = new Minus();
+            PerformOperation(new Minus());
         }
 
         private void ButtonMultiply_Click(object sender, EventArgs e)
         {
-            Culculate();
-            _calculate = new Multiply();
+            PerformOperation(new Multiply());
         }
 
         private void ButtonDegree_Click(object sender, EventArgs e)
         {
-            Culculate();
-            _calculate = new Degree();
+            PerformOperation(new Degree());
+        }
+
+        private void ButtonEquels_Click(object sender, EventArgs e)
+        {
+            Calculate();
         }
 
         private void ButtonNum_Click(object sender, EventArgs e)
         {
-            if (_isShowResult)
+            if (_isResultDisplayed)
             {
-                _isShowResult = false;
+                _isResultDisplayed = false;
                 Table.Text = "";
             }
-            if ((sender as Button).Text == ",")
+            if (sender is Button button)
             {
-                if (Table.Text.Contains(",") == false)
-                    Table.Text += (sender as Button).Text;
-            }
-            else
-            {
-                Table.Text += (sender as Button).Text;
+                Table.Text += button.Text == "," && !Table.Text.Contains(",") ? button.Text : button.Text;
             }
         }
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (!_isShowResult && Table.Text.Length != 0)
+            if (!_isResultDisplayed && Table.Text.Length != 0)
             {
-                var TText = new StringBuilder(Table.Text);
-                TText.Remove(TText.Length - 1, 1);
-                Table.Text = TText.ToString();
+                Table.Text = Table.Text.Remove(Table.Text.Length - 1, 1);
             }
         }
 
         private void ButtonClearC_Click(object sender, EventArgs e)
         {
-            _isShowResult = true;
-            _number1 = null;
-            _number2 = null;
-            Table.Text = "0";
+            ClearInput();
         }
 
         private void ButtonClearCE_Click(object sender, EventArgs e)
         {
-            _isShowResult = true;
+            _isResultDisplayed = true;
             Table.Text = "0";
         }
 
@@ -131,58 +125,54 @@ namespace Calculator
         {
             if (Table.Text.Length != 0)
             {
-                if (Table.Text[0] != '-')
-                    Table.Text = Table.Text.Insert(0, "-");
-                else
-                    Table.Text = Table.Text.Remove(0, 1);
+                Table.Text = Table.Text.StartsWith("-") ? Table.Text.Substring(1) : "-" + Table.Text;
 
-                if (_isShowResult)
-                    _number1 = -_number1;
+                if (_isResultDisplayed)
+                    _inputNumberFirst = -_inputNumberFirst;
             }
         }
 
         private void ButtonSqrt_Click(object sender, EventArgs e)
         {
-            Table.Text = Math.Sqrt(double.Parse(Table.Text)).ToString();
-            _isShowResult = true;
+            if (TryGetCurrentValue(Table.Text, out double currentValue))
+            {
+                Table.Text = Math.Sqrt(currentValue).ToString();
+                _isResultDisplayed = true;
+            }
         }
 
         private void ButtonFraction_Click(object sender, EventArgs e)
         {
-            Table.Text = (1 / double.Parse(Table.Text)).ToString();
-            _isShowResult = true;
-        }
-
-        private void ButtonEquels_Click(object sender, EventArgs e)
-        {
-            Culculate();
+            if (TryGetCurrentValue(Table.Text, out double currentValue))
+            {
+                Table.Text = (1 / currentValue).ToString();
+                _isResultDisplayed = true;
+            }
         }
 
         private void ButtonDot_Click(object sender, EventArgs e)
         {
-            if (_isShowResult)
+            if (_isResultDisplayed)
             {
                 ButtonClearC_Click(sender, e);
-                _isShowResult = false;
+                _isResultDisplayed = false;
             }
             ButtonNum_Click(sender, e);
         }
 
         private void buttonMS_Click(object sender, EventArgs e)
         {
-            if (Table.Text != "")
+            if (TryGetCurrentValue(Table.Text, out double currentValue) && Table.Text != "")
             {
-                _memory = double.Parse(Table.Text);
-                buttonMC.Enabled = true;
-                buttonMR.Enabled = true;
+                _memory = currentValue;
+                buttonsMC_MR_Enabled(true);
             }
         }
-
+        
         private void buttonMC_Click(object sender, EventArgs e)
         {
             _memory = null;
-            buttonMC.Enabled = false;
-            buttonMR.Enabled = false;
+            buttonsMC_MR_Enabled(false);
         }
 
         private void buttonMR_Click(object sender, EventArgs e)
@@ -205,57 +195,60 @@ namespace Calculator
             else buttonMS_Click(sender, e);
         }
 
+        public void buttonsMC_MR_Enabled(bool isEnable)
+        {
+            buttonMC.Enabled = isEnable;
+            buttonMR.Enabled = isEnable;
+        }
+
         private void Calc_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Text = string.Format("{0}", (int) e.KeyChar);
             var key = e.KeyChar;
-            if (key >= '0' && key <= '9')
+
+            switch (key)
             {
-                if (_isShowResult)
-                {
-                    _isShowResult = false;
-                    Table.Text = "";
-                }
-                Table.Text += key;
+                case var digit when digit >= '0' && digit <= '9':
+                    if (_isResultDisplayed)
+                    {
+                        _isResultDisplayed = false;
+                        Table.Text = "";
+                    }
+                    Table.Text += digit;
+                    break;
+                case '-':
+                    PerformOperation(new Minus());
+                    break;
+                case '+':
+                    PerformOperation(new Plus());
+                    break;
+                case '*':
+                    PerformOperation(new Multiply());
+                    break;
+                case '/':
+                    PerformOperation(new Degree());
+                    break;
+                case '=':
+                    Calculate();
+                    break;
+                case ',':
+                    if (!Table.Text.Contains(","))
+                        Table.Text += key;
+                    break;
+                case (char)8:
+                    if (!_isResultDisplayed && Table.Text.Length != 0)
+                    {
+                        Table.Text = Table.Text.Remove(Table.Text.Length - 1, 1);
+                    }
+                    break;
             }
-            else if (key == '-')
-            {
-                Culculate();
-                _calculate = new Minus();
-            }
-            else if (key == '+')
-            {
-                Culculate();
-                _calculate = new Plus();
-            }
-            else if (key == '*')
-            {
-                Culculate();
-                _calculate = new Multiply();
-            }
-            else if (key == '/')
-            {
-                Culculate();
-                _calculate = new Degree();
-            }
-            else if (key == '=')
-            {
-                Culculate();
-            }
-            else if (key == ',')
-            {
-                if (Table.Text.Contains(",") == false)
-                    Table.Text += key;
-            }
-            else if (key == 8)
-            {
-                if (!_isShowResult && Table.Text.Length != 0)
-                {
-                    var TText = new StringBuilder(Table.Text);
-                    TText.Remove(TText.Length - 1, 1);
-                    Table.Text = TText.ToString();
-                }
-            }
+        }
+
+        private bool TryGetCurrentValue(string input, out double value)
+        {
+            value = 0;
+            if (double.TryParse(input, out value))
+                return true;
+            return false;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Win7Calc
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Calc());           
+            Application.Run(new CalculatorProject());           
         }
     }
 }
