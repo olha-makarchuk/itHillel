@@ -1,0 +1,76 @@
+﻿<Window x:Class="WPFCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFCalculator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="650">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="Foreground" Value="Blue"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel LastChildFill="True" Name="MainPanel" Background="LightGray">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Margin="10" Background="Black" Name="ResultTextBox" TextChanged="ResultTextBox_TextChanged"></TextBox>
+
+            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource ButtonStyle}" Background="Plum" Click="MCButton_Click">MC</Button>
+            <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource ButtonStyle}" Background="Plum" Click="MRButton_Click">MR</Button>
+            <Button Grid.Row="2" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="Plum" Click="MPlusButton_Click">M+</Button>
+            <Button Grid.Row="2" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="Plum" Click="MMinusButton_Click">M-</Button>
+            <Button Grid.Row="2" Grid.Column="5" Style="{StaticResource ButtonStyle}" Background="Plum" Click="MSButton_Click">MS</Button>
+
+            <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource ButtonStyle}" Background="Red" Click="CEButton_Click">CE</Button>
+            <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource ButtonStyle}" Background="Red" Click="CButton_Click">C</Button>
+
+            <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="Pink" Click="BackspaceButton_Click">←</Button>
+
+            <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="NineButton_Click">9</Button>
+            <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="EightButton_Click">8</Button>
+            <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="SevenButton_Click">7</Button>
+            <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="FourButton_Click">4</Button>
+            <Button Grid.Row="5" Grid.Column="2" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="FifeButton_Click">5</Button>
+            <Button Grid.Row="5" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="SixButton_Click">6</Button>
+            <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="OneButton_Click">1</Button>
+            <Button Grid.Row="6" Grid.Column="2" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="TwoButton_Click">2</Button>
+            <Button Grid.Row="6" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="ThreeButton_Click">3</Button>
+            <Button Grid.Row="7" Grid.Column="1" Style="{StaticResource ButtonStyle}" Grid.ColumnSpan="2" Background="LightBlue" Click="DigitButton_Click" Name="ZeroButton_Click">0</Button>
+            <Button Grid.Row="7" Grid.Column="3" Style="{StaticResource ButtonStyle}" Background="LightBlue" Click="DigitButton_Click" Name="ComaButton_Click">,</Button>
+
+            <Button Grid.Row="3" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="PlusMinusButton_Click">±</Button>
+            <Button Grid.Row="3" Grid.Column="5" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="SquareButton_Click">√</Button>
+            <Button Grid.Row="4" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="DivisionButton_Click">/</Button>
+            <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="PersentButton_Click">%</Button>
+            <Button Grid.Row="5" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="MultiplicationButton_Click">*</Button>
+            <Button Grid.Row="5" Grid.Column="5" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="FractionButton_Click">1/x</Button>
+            <Button Grid.Row="6" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="MinusButton_Click">-</Button>
+            <Button Grid.Row="7" Grid.Column="4" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="PlusButton_Click">+</Button>
+            <Button Grid.Row="6" Grid.Column="5" Grid.RowSpan="2" Style="{StaticResource ButtonStyle}" Background="LightGreen" Click="EquelsPlusButton_Click">=</Button>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -180,7 +180,7 @@
             // 
             this.ButtonMinus.BackColor = System.Drawing.Color.PaleGreen;
             this.ButtonMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.ButtonMinus.Location = new System.Drawing.Point(330, 394);
+            this.ButtonMinus.Location = new System.Drawing.Point(330, 395);
             this.ButtonMinus.Margin = new System.Windows.Forms.Padding(5);
             this.ButtonMinus.Name = "ButtonMinus";
             this.ButtonMinus.Size = new System.Drawing.Size(93, 64);
@@ -359,16 +359,10 @@
             // 
             // Table
             // 
-            this.Table.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Table.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.Table.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.Table.Location = new System.Drawing.Point(20, 20);
-            this.Table.Margin = new System.Windows.Forms.Padding(5);
+            this.Table.Location = new System.Drawing.Point(0, 0);
             this.Table.Name = "Table";
-            this.Table.ReadOnly = true;
-            this.Table.Size = new System.Drawing.Size(504, 59);
-            this.Table.TabIndex = 25;
-            this.Table.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Table.Size = new System.Drawing.Size(100, 28);
+            this.Table.TabIndex = 32;
             // 
             // buttonMC
             // 
@@ -415,7 +409,7 @@
             this.buttonMR.BackColor = System.Drawing.Color.Plum;
             this.buttonMR.Enabled = false;
             this.buttonMR.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.buttonMR.Location = new System.Drawing.Point(123, 95);
+            this.buttonMR.Location = new System.Drawing.Point(124, 95);
             this.buttonMR.Margin = new System.Windows.Forms.Padding(5);
             this.buttonMR.Name = "buttonMR";
             this.buttonMR.Size = new System.Drawing.Size(93, 66);
