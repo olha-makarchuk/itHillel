@@ -1,0 +1,8 @@
+{
+  "FullName": "Макарчук Ольга Вячеславівна",
+  "Birthday": "2004-01-08T00:00:00",
+  "Education": "Студентка 3 курсу Київського політехнічно університету, Інформаційні системи та технології",
+  "Skills": ".NET, C#, ASP.NET, MAUI, SQL, Azure, Doker, RabbitMQ, JavaScript, Html, Css, Sass...",
+  "Email": "test@example.com",
+  "Phone": "+380123456789"
+}

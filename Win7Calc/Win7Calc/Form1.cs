@@ -250,5 +250,10 @@ namespace Calculator
                 return true;
             return false;
         }
+
+        private void ButtonPercent_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
