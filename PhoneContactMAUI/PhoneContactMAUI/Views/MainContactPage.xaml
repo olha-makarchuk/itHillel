@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PhoneContactMAUI.Views.MainContactPage">
+
+    <VerticalStackLayout Padding="15">
+        <Label 
+         Text="Note Data"
+         FontSize="Medium"
+         VerticalOptions="Center" 
+         HorizontalOptions="Start" />
+        <Frame>
+            <VerticalStackLayout Spacing="5">
+                <Label 
+                 FontSize="Medium"
+                 Text="Contact Details"
+                 VerticalOptions="Center" 
+                 HorizontalOptions="Start" />
+
+                <Entry FontSize="Medium" Text="{Binding SelectedContact.Name}" Placeholder="Name" />
+                <Entry FontSize="Medium" Text="{Binding SelectedContact.Email}" Placeholder="Email" />
+                <Entry FontSize="Medium" Text="{Binding SelectedContact.PhoneNumber}" Placeholder="Phone Number" />
+
+                <Button Text="Add Contact"
+                 Command="{Binding AddContactCommand}"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <ListView ItemsSource="{Binding ContactCollection}" SelectedItem="{Binding SelectedContact}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <HorizontalStackLayout Spacing="30" Margin="10">
+            <Button Text="Remove Contact" Command="{Binding DeleteContactCommand}"/>
+            <Button Text="Edit Contact"  Command="{Binding EditContactCommand}"/>
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentView>

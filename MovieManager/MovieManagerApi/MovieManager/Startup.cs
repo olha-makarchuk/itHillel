@@ -65,7 +65,7 @@ namespace MovieManager
                 endpoints.MapControllers();
             });
         }
-
+        
         protected virtual void ConfigureDb(IServiceCollection services)
         {
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
